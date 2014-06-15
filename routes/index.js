@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var Trianglify = new require('trianglify');
-var rendersvg = require('rendersvg');
 var fs = require('fs');
 var svg2png = require('svg2png');
 var uuid = require('uuid');
