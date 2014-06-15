@@ -10,7 +10,8 @@ var t = new Trianglify();
 
 router.get('/', function (req, res) {
   var help = {
-    howto: 'GET /image.svg to retrieve randomly generated svg pattern using trianglify.js. Replace svg by png to get converted png file.'
+    howto: 'GET /image.svg to retrieve randomly generated svg pattern using trianglify.js. Replace svg by png to get converted png file.',
+    contribute: 'https://github.com/kimar/trianglify-api'
   }
   res.json(help);
 });
