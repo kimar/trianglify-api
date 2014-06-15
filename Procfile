@@ -1,1 +1,1 @@
-web: ./www/bin
+web: bin/www
