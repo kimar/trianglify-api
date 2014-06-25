@@ -22,6 +22,13 @@ or
 http://trianglify-api.herokuapp.com/image.png
 ```
 
+or by directly specifying an image size
+
+```
+http://trianglify-api.herokuapp.com/1366x768.svg
+```
+
+
 **The MIT License (MIT)**
 
 Copyright (c) 2014 Marcus Kida
