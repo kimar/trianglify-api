@@ -5,6 +5,7 @@ var fs = require('fs');
 var svg2png = require('svg2png');
 var uuid = require('uuid');
 var S = require('string');
+var regex = new RegExp(/[0-9]+x[0-9]+.(svg|png)/);
 
 var t = new Trianglify();
 
@@ -19,6 +20,22 @@ router.get('/', function (req, res) {
 router.get('/:filename', function(req, res) {
 
   var wantsPng = false;
+  var width = 640;
+  var height = 480;
+
+  if (!S(req.params.filename).startsWith('image')) {
+    if (regex.test(req.params.filename)) {
+      var components = req.params.filename.split(/.(svg|png)/);
+      width = components[0].split('x')[0];
+      height = components[0].split('x')[1];
+    } else {
+      return res.send(400);
+    }
+  }
+
+  if (width > 2000 || height > 2000) {
+    return res.send(400);
+  }
 
   if (S(req.params.filename).endsWith('png')) {
     wantsPng = true;
@@ -32,9 +49,8 @@ router.get('/:filename', function(req, res) {
   var svgFile = '/tmp/' + fileId + '.svg';
   var pngFile = '/tmp/' + fileId + '.png';
 
-  fs.writeFile(svgFile, t.generate(800, 600).svgString, function (err) {
+  fs.writeFile(svgFile, t.generate(parseInt(width), parseInt(height)).svgString, function (err) {
     if (err) {
-      console.log('Error occured: ' + err);
       return res.send(500);
     }
 
@@ -44,7 +60,6 @@ router.get('/:filename', function(req, res) {
 
     svg2png(svgFile, pngFile, function (err) {
         if (err) {
-          console.log('Error occured: ' + err);
           return res.send(500);
         }
         res.sendfile(pngFile);
