@@ -7,7 +7,7 @@ var uuid = require('uuid');
 var S = require('string');
 var regex = new RegExp(/[0-9]+x[0-9]+.(svg|png)/);
 
-var t = new Trianglify();
+var t = new Trianglify({noiseIntensity: 0});
 
 router.get('/', function (req, res) {
   var help = {
@@ -49,6 +49,9 @@ router.get('/:filename', function(req, res) {
   var svgFile = '/tmp/' + fileId + '.svg';
   var pngFile = '/tmp/' + fileId + '.png';
 
+  t.options.x_gradient = Trianglify.randomColor();
+  t.options.y_gradient = t.options.x_gradient.map(function(c){return d3.rgb(c).brighter(.5)});
+  
   fs.writeFile(svgFile, t.generate(parseInt(width), parseInt(height)).svgString, function (err) {
     if (err) {
       return res.send(500);
